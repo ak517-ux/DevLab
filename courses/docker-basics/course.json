@@ -1,0 +1,12 @@
+{
+  "id": "docker-basics",
+  "title": "Docker: основы контейнеризации",
+  "slug": "docker-basics",
+  "level": "beginner",
+  "description": "Понимание образов, контейнеров и базовых команд Docker через интерактивные лабораторные.",
+  "lessons": [
+    { "id": "intro", "title": "Что такое Docker?", "type": "theory" },
+    { "id": "images-and-containers", "title": "Образы и контейнеры", "type": "theory" },
+    { "id": "interactive-lab-first-container", "title": "Интерактивная лабораторная: первый контейнер", "type": "lab" }
+  ]
+}

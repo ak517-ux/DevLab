@@ -1,0 +1,23 @@
+{
+  "id": "interactive-lab-first-container",
+  "title": "Интерактивная лабораторная: первый контейнер",
+  "type": "lab",
+  "steps": [
+    {
+      "id": "step-1",
+      "title": "Запуск первого контейнера",
+      "description": "Запусти контейнер с образом nginx.",
+      "terminal": {
+        "expected": "docker run --name my-nginx -p 8080:80 nginx",
+        "hint": "Используй docker run и проброс порта."
+      },
+      "visualization": {
+        "type": "network-diagram",
+        "nodes": ["host", "container:nginx"],
+        "links": [
+          { "from": "host", "to": "container:nginx", "label": "TCP 8080 → 80" }
+        ]
+      }
+    }
+  ]
+}
