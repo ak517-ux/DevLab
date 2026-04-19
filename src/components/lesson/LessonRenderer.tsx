@@ -1,11 +1,23 @@
 "use client";
 
-import { LabBlock } from "@/components/lab/LabBlock";
+import { LabBlock } from "@/src/components/lab/LabBlock";
 
-export function LessonRenderer({ lesson }: { lesson: any }) {
+type LessonBlock =
+  | { type: "text"; value: string }
+  | {
+      type: "lab";
+      engine: "docker";
+      steps: Array<{ expect: string; hint?: string; successText?: string }>;
+    };
+
+type Lesson = {
+  content: LessonBlock[];
+};
+
+export function LessonRenderer({ lesson }: { lesson: Lesson }) {
   return (
     <div className="space-y-12">
-      {lesson.content.map((block: any, i: number) => {
+      {lesson.content.map((block, i) => {
         if (block.type === "text") {
           return (
             <p key={i} className="text-lg leading-relaxed text-slate-300">
@@ -15,13 +27,7 @@ export function LessonRenderer({ lesson }: { lesson: any }) {
         }
 
         if (block.type === "lab") {
-          return (
-            <LabBlock
-              key={i}
-              engine={block.engine}
-              steps={block.steps}
-            />
-          );
+          return <LabBlock key={i} engine={block.engine} steps={block.steps} />;
         }
 
         return null;

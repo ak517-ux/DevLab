@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import type { DevLabEngineName } from "@/lib/devlab/types";
-import { InteractiveTerminal } from "@/components/terminal/InteractiveTerminal";
+import type { DevLabEngineName } from "@/src/lib/devlab/types";
+import { InteractiveTerminal } from "@/src/components/terminal/InteractiveTerminal";
 import { LabVisualization } from "./LabVisualization";
 
 type LabStep = {

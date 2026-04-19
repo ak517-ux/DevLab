@@ -3,7 +3,19 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
-const SCRIPT = [
+type LineType = "info" | "loading" | "success" | "error";
+
+type TerminalLine = {
+  type: LineType;
+  text: string;
+};
+
+type ScriptItem = {
+  cmd: string;
+  out: TerminalLine[];
+};
+
+const SCRIPT: ScriptItem[] = [
   {
     cmd: "docker pull nginx",
     out: [
@@ -46,7 +58,7 @@ const SCRIPT = [
 
 export function AnimatedTerminal() {
   const [currentCommand, setCurrentCommand] = useState("");
-  const [output, setOutput] = useState<any[]>([]);
+  const [output, setOutput] = useState<TerminalLine[]>([]);
   const [cmdIndex, setCmdIndex] = useState(0);
   const [charIndex, setCharIndex] = useState(0);
   const [outIndex, setOutIndex] = useState(0);
