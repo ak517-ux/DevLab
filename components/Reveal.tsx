@@ -1,16 +1,17 @@
 "use client";
 
+import type { ReactNode } from "react";
 import { motion, useAnimation, useInView } from "framer-motion";
 import { useEffect, useRef } from "react";
 
-export function Reveal({ children, delay = 0 }) {
-  const ref = useRef(null);
+export function Reveal({ children, delay = 0 }: { children: ReactNode; delay?: number }) {
+  const ref = useRef<HTMLDivElement | null>(null);
   const inView = useInView(ref, { once: true, margin: "-100px" });
   const controls = useAnimation();
 
   useEffect(() => {
     if (inView) controls.start("visible");
-  }, [inView]);
+  }, [inView, controls]);
 
   return (
     <motion.div

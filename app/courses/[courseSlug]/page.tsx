@@ -1,12 +1,35 @@
 import fs from "fs";
 import path from "path";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 
-export default function CoursePage({ params }) {
-  const { courseSlug } = params;
+type CourseLesson = {
+  id: string;
+  title: string;
+  type?: string;
+};
+
+type Course = {
+  id: string;
+  title: string;
+  description?: string;
+  lessons: CourseLesson[];
+};
+
+export default async function CoursePage({
+  params,
+}: {
+  params: Promise<{ courseSlug: string }>;
+}) {
+  const { courseSlug } = await params;
+
+  if (!courseSlug) notFound();
 
   const coursePath = path.join(process.cwd(), "courses", courseSlug, "course.json");
-  const course = JSON.parse(fs.readFileSync(coursePath, "utf8"));
+
+  if (!fs.existsSync(coursePath)) notFound();
+
+  const course = JSON.parse(fs.readFileSync(coursePath, "utf8")) as Course;
 
   return (
     <main className="max-w-5xl mx-auto px-6 py-16">

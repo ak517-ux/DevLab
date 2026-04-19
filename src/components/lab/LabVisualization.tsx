@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { on } from "@/lib/devlab/events/eventBus";
+import { on } from "@/src/lib/devlab/events/eventBus";
 
 type DockerContainer = { id: string; image: string; name: string };
 

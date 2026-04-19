@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { DevLabEngine } from "@/lib/devlab/engine";
-import type { DevLabEngineName } from "@/lib/devlab/types";
+import { DevLabEngine } from "@/src/lib/devlab/engine";
+import type { DevLabEngineName } from "@/src/lib/devlab/types";
 
 type Props = {
   engine: DevLabEngineName;
