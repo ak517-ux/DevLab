@@ -1,11 +1,14 @@
 import Link from "next/link";
+import { Logo } from "@/components/Logo";
 
 export function Header() {
   return (
     <header className="border-b border-slate-800/60 bg-[#050509]/80 backdrop-blur-md">
       <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-        <Link href="/" className="text-xl font-semibold tracking-tight">
-          DevLab
+
+        {/* ЛОГОТИП */}
+        <Link href="/" className="flex items-center">
+          <Logo width={140} />
         </Link>
 
         <nav className="flex items-center gap-6 text-sm text-slate-300">

@@ -1,0 +1,28 @@
+{
+  "id": "first-container",
+  "type": "lab",
+  "title": "Твой первый контейнер",
+  "content": [
+    {
+      "type": "lab",
+      "engine": "docker",
+      "steps": [
+        {
+          "expect": "docker pull nginx",
+          "hint": "Скачай образ nginx из Docker Hub",
+          "successText": "Образ nginx успешно скачан"
+        },
+        {
+          "expect": "docker run -d -p 80:80 nginx",
+          "hint": "Запусти контейнер в фоне и пробрось порт 80",
+          "successText": "Контейнер nginx запущен"
+        },
+        {
+          "expect": "docker ps",
+          "hint": "Проверь, что контейнер работает",
+          "successText": "Контейнер отображается в списке"
+        }
+      ]
+    }
+  ]
+}
