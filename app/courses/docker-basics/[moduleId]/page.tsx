@@ -1,9 +1,25 @@
 import fs from "fs";
 import path from "path";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 
-export default async function ModulePage({ params }: { params: { moduleId: string } }) {
-  const { moduleId } = params;
+type Lesson = {
+  id: string;
+  title: string;
+};
+
+type ModuleData = {
+  title: string;
+  description: string;
+  lessons: Lesson[];
+};
+
+export default async function ModulePage({
+  params,
+}: {
+  params: Promise<{ moduleId: string }>;
+}) {
+  const { moduleId } = await params;
 
   const modulePath = path.join(
     process.cwd(),
@@ -14,7 +30,13 @@ export default async function ModulePage({ params }: { params: { moduleId: strin
     "module.json"
   );
 
-  const moduleData = JSON.parse(fs.readFileSync(modulePath, "utf8"));
+  if (!fs.existsSync(modulePath)) {
+    notFound();
+  }
+
+  const moduleData = JSON.parse(
+    fs.readFileSync(modulePath, "utf8")
+  ) as ModuleData;
 
   return (
     <div className="min-h-screen bg-black text-white px-6 py-10">
@@ -27,7 +49,7 @@ export default async function ModulePage({ params }: { params: { moduleId: strin
         </div>
 
         <div className="space-y-4">
-          {moduleData.lessons.map((lesson: any, i: number) => (
+          {moduleData.lessons.map((lesson, i: number) => (
             <Link
               key={lesson.id}
               href={`/courses/docker-basics/${moduleId}/${lesson.id}`}

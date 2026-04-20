@@ -2,13 +2,33 @@ import fs from "fs";
 import path from "path";
 import SidebarLessons from "@/components/SidebarLessons";
 import LessonNavigation from "@/components/LessonNavigation";
+import { notFound } from "next/navigation";
+
+type Lesson = {
+  id: string;
+  title: string;
+};
+
+type ModuleData = {
+  lessons: Lesson[];
+};
+
+type LessonSection = {
+  title: string;
+  content: string;
+};
+
+type LessonData = {
+  title: string;
+  sections?: LessonSection[];
+};
 
 export default async function LessonPage({
   params,
 }: {
-  params: { moduleId: string; lessonId: string };
+  params: Promise<{ moduleId: string; lessonId: string }>;
 }) {
-  const { moduleId, lessonId } = params;
+  const { moduleId, lessonId } = await params;
 
   const modulePath = path.join(
     process.cwd(),
@@ -28,8 +48,12 @@ export default async function LessonPage({
     `${lessonId}.json`
   );
 
-  const moduleData = JSON.parse(fs.readFileSync(modulePath, "utf8"));
-  const lessonData = JSON.parse(fs.readFileSync(lessonPath, "utf8"));
+  if (!fs.existsSync(modulePath) || !fs.existsSync(lessonPath)) {
+    notFound();
+  }
+
+  const moduleData = JSON.parse(fs.readFileSync(modulePath, "utf8")) as ModuleData;
+  const lessonData = JSON.parse(fs.readFileSync(lessonPath, "utf8")) as LessonData;
 
   return (
     <div className="min-h-screen bg-black text-white px-6 py-10">
@@ -39,7 +63,7 @@ export default async function LessonPage({
         <main className="space-y-10">
           <h1 className="text-3xl md:text-5xl font-bold">{lessonData.title}</h1>
 
-          {lessonData.sections?.map((s: any, i: number) => (
+          {lessonData.sections?.map((s, i: number) => (
             <section key={i}>
               <h2 className="text-2xl font-semibold text-[#FF6A1A] mb-2">
                 {s.title}
