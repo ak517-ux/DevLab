@@ -1,6 +1,7 @@
-import Link from "next/link";
 import fs from "fs";
 import path from "path";
+import { CourseCard } from "@/components/courses/CourseCard";
+import { GridBackground } from "@/components/ui/GridBackground";
 
 export default function CoursesPage() {
   const coursesDir = path.join(process.cwd(), "courses");
@@ -13,20 +14,19 @@ export default function CoursesPage() {
   });
 
   return (
-    <main className="max-w-5xl mx-auto px-6 py-16">
-      <h1 className="text-3xl font-semibold mb-8">Курсы</h1>
+    <main className="relative min-h-screen py-24 px-6">
+      <GridBackground />
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-        {courses.map((course) => (
-          <Link
-            key={course.slug}
-            href={`/courses/${course.slug}`}
-            className="block p-6 rounded-xl bg-slate-900 border border-slate-800 hover:border-orange-500 transition"
-          >
-            <h2 className="text-xl font-medium mb-2">{course.title}</h2>
-            <p className="text-slate-400 text-sm">{course.description}</p>
-          </Link>
-        ))}
+      <div className="max-w-6xl mx-auto">
+        <h1 className="text-4xl font-semibold mb-12 tracking-tight text-white">
+          Курсы DevLab
+        </h1>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          {courses.map((course) => (
+            <CourseCard key={course.slug} course={course} />
+          ))}
+        </div>
       </div>
     </main>
   );
