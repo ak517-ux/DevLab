@@ -21,13 +21,21 @@ type Lesson = {
   blocks?: LessonBlock[];
 };
 
+// Функция для создания ID из заголовка
+function generateIdFromTitle(title: string): string {
+  return title
+    .toLowerCase()
+    .replace(/[^a-zа-яё0-9\s]/g, '')
+    .replace(/\s+/g, '-')
+    .substring(0, 50);
+}
+
 // Компонент теста
 function QuizBlockComponent({ question, options, correct, index }: { question: string; options: string[]; correct: number; index: number }) {
   const [selected, setSelected] = useState<number | null>(null);
   const [isAnswered, setIsAnswered] = useState(false);
   const [isCorrect, setIsCorrect] = useState(false);
   
-  // Фиксированный ID на основе индекса (не меняется)
   const radioName = `quiz-${index}`;
 
   const handleCheck = () => {
@@ -153,17 +161,48 @@ export function LessonRenderer({ lesson }: { lesson: Lesson }) {
     );
   }
 
+  // Создаём массив с ID для отладки
+  const sectionIds: string[] = [];
+
   return (
     <div className="space-y-10">
       {blocks.map((block, index) => {
         const blockContent = block.content || block;
         
+        // Генерируем ID
+        let sectionId = `section-${index}`;
+        
+        if (block.type === "intro") {
+          sectionId = "vvedenie";
+        } else if (block.type === "text" && blockContent.content) {
+          const h2Match = blockContent.content.match(/^## (.+)$/m);
+          if (h2Match) {
+            sectionId = generateIdFromTitle(h2Match[1]);
+          }
+        } else if (block.type === "visual" && blockContent.title) {
+          sectionId = generateIdFromTitle(blockContent.title);
+        } else if (block.type === "terminal" && blockContent.title) {
+          sectionId = generateIdFromTitle(blockContent.title);
+        } else if (block.type === "quiz") {
+          sectionId = `quiz-section-${index}`;
+        }
+        
+        sectionIds.push(sectionId);
+        
+        // Логируем ID для отладки
+        if (typeof window !== 'undefined') {
+          console.log(`Блок ${index}: тип=${block.type}, id=${sectionId}`);
+        }
+        
         switch (block.type) {
           case "intro":
-            return <IntroText key={block.id || index} />;
-
+            return (
+              <div key={block.id || index} id={sectionId} className="scroll-mt-24">
+                <IntroText />
+              </div>
+            );
+            
           case "text":
-            // Получаем текст из разных возможных полей
             let textContent = blockContent.content || blockContent.markdown || blockContent.text;
             if (!textContent && typeof blockContent === 'string') {
               textContent = blockContent;
@@ -172,54 +211,70 @@ export function LessonRenderer({ lesson }: { lesson: Lesson }) {
               textContent = "Пустой блок";
             }
             return (
-              <div key={block.id || index} className="prose prose-invert max-w-none" data-color-mode="dark">
-                <MDEditor.Markdown 
-                  source={textContent}
-                  style={{ background: 'transparent', color: 'white' }}
+              <div key={block.id || index} id={sectionId} className="scroll-mt-24">
+                <div className="prose prose-invert max-w-none" data-color-mode="dark">
+                  <MDEditor.Markdown 
+                    source={textContent}
+                    style={{ background: 'transparent', color: 'white' }}
+                  />
+                </div>
+              </div>
+            );
+            
+          case "visual":
+            if (blockContent.variant === "journey-2d") {
+              return (
+                <div key={block.id || index} id={sectionId} className="scroll-mt-24">
+                  <PacketJourney2D />
+                </div>
+              );
+            }
+            if (blockContent.variant === "packet-structure") {
+              return (
+                <div key={block.id || index} id={sectionId} className="scroll-mt-24">
+                  <PacketStructure />
+                </div>
+              );
+            }
+            return (
+              <div key={block.id || index} id={sectionId} className="scroll-mt-24">
+                <div className="bg-gradient-to-br from-blue-500/10 to-purple-500/10 border border-white/10 rounded-2xl p-8 text-center">
+                  <div className="text-6xl mb-4">🎨</div>
+                  <h3 className="text-xl font-semibold text-white mb-2">{blockContent.title || "Визуализация"}</h3>
+                  <p className="text-slate-300">{blockContent.text || "Интерактивная визуализация"}</p>
+                </div>
+              </div>
+            );
+            
+          case "terminal":
+            return (
+              <div key={block.id || index} id={sectionId} className="scroll-mt-24">
+                <TerminalBlock
+                  command={blockContent.command || "echo 'Hello World'"}
+                  output={blockContent.output || ["Команда выполнена"]}
+                  hint={blockContent.hint}
                 />
               </div>
             );
-
-          case "visual":
-            if (blockContent.variant === "packet-structure") {
-  return <PacketStructure key={block.id || index} />;
-}
-            if (blockContent.variant === "journey-2d") {
-              return <PacketJourney2D key={block.id || index} />;
-            }
+            
+          case "quiz":
             return (
-              <div key={block.id || index} className="bg-gradient-to-br from-blue-500/10 to-purple-500/10 border border-white/10 rounded-2xl p-8 text-center">
-                <div className="text-6xl mb-4">🎨</div>
-                <h3 className="text-xl font-semibold text-white mb-2">{blockContent.title || "Визуализация"}</h3>
-                <p className="text-slate-300">{blockContent.text || "Интерактивная визуализация"}</p>
+              <div key={block.id || index} id={sectionId} className="scroll-mt-24">
+                <QuizBlockComponent 
+                  index={index}
+                  question={blockContent.question}
+                  options={blockContent.options}
+                  correct={blockContent.correct}
+                />
               </div>
             );
-
-          case "terminal":
-            return (
-              <TerminalBlock
-                key={block.id || index}
-                command={blockContent.command || "echo 'Hello World'"}
-                output={blockContent.output || ["Команда выполнена"]}
-                hint={blockContent.hint}
-              />
-            );
-
-          case "quiz":
-  return (
-    <QuizBlockComponent 
-      key={block.id || index}
-      index={index}
-      question={blockContent.question}
-      options={blockContent.options}
-      correct={blockContent.correct}
-    />
-  );
-
+            
           default:
             return (
-              <div key={block.id || index} className="bg-yellow-500/10 border border-yellow-500/30 rounded-2xl p-4 text-yellow-400">
-                Неподдерживаемый тип блока: {block.type}
+              <div key={block.id || index} id={sectionId} className="scroll-mt-24">
+                <div className="bg-yellow-500/10 border border-yellow-500/30 rounded-2xl p-4 text-yellow-400">
+                  Неподдерживаемый тип блока: {block.type}
+                </div>
               </div>
             );
         }

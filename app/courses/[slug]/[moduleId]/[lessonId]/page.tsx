@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { LessonRenderer } from "@/components/lesson/LessonRenderer";
 import LessonProgressBar from "@/components/lesson/LessonProgressBar";
 import CompleteLessonButton from "@/components/lesson/CompleteLessonButton";
+import TableOfContents from "@/components/lesson/TableOfContents";
 import Link from "next/link";
 
 interface LessonData {
@@ -76,6 +77,8 @@ export default async function LessonPage({ params }: { params: { slug: string; m
   const prevLesson = currentIndex > 0 ? moduleData.lessons[currentIndex - 1] : null;
   const nextLesson = currentIndex < moduleData.lessons.length - 1 ? moduleData.lessons[currentIndex + 1] : null;
   
+  const lessonBlocks = lessonData.blocks || [];
+  
   return (
     <div className="min-h-screen bg-black text-white relative">
       {/* Фоновая сетка */}
@@ -85,6 +88,9 @@ export default async function LessonPage({ params }: { params: { slug: string; m
       </div>
       
       <LessonProgressBar />
+      
+      {/* Оглавление */}
+      <TableOfContents blocks={lessonBlocks} />
       
       <div className="relative z-10 max-w-4xl mx-auto px-6 py-10">
         {/* Навигация назад к модулю */}
@@ -118,7 +124,7 @@ export default async function LessonPage({ params }: { params: { slug: string; m
           />
         </div>
         
-        {/* Навигация между уроками - ИСПРАВЛЕНО */}
+        {/* Навигация между уроками */}
         <div className="flex justify-between items-center gap-4 mt-12 pt-8 border-t border-white/10">
           {prevLesson ? (
             <Link
