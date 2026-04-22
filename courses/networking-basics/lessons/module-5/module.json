@@ -1,0 +1,11 @@
+{
+  "id": 5,
+  "title": "Маленькая лаборатория хакера",
+  "description": "Практикуемся с сетевыми командами",
+  "lessons": [
+    { "id": "lab-1", "title": "Лаборатория: ping" },
+    { "id": "lab-2", "title": "Лаборатория: traceroute" },
+    { "id": "lab-3", "title": "Лаборатория: nslookup" },
+    { "id": "lab-4", "title": "Лаборатория: netstat" }
+  ]
+}

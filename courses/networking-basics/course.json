@@ -1,0 +1,12 @@
+{
+  "title": "Сети: Основы",
+  "description": "Пойми, как работает интернет. IP-адреса, протоколы, маршрутизация и немного хакерства.",
+  "previewImage": "/images/networking-bg.png",
+  "icon": "🌐",
+  "previewCode": [
+    "ping google.com",
+    "traceroute google.com",
+    "nslookup google.com",
+    "curl ifconfig.me"
+  ]
+}

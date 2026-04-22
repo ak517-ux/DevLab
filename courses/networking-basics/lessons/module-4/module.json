@@ -1,0 +1,12 @@
+{
+  "id": 4,
+  "title": "Протоколы — правила игры",
+  "description": "HTTP, HTTPS, TCP, UDP — как данные передаются",
+  "lessons": [
+    { "id": "lesson-1", "title": "Что такое протокол" },
+    { "id": "lesson-2", "title": "TCP vs UDP" },
+    { "id": "lesson-3", "title": "HTTP и HTTPS" },
+    { "id": "lesson-4", "title": "Порты" },
+    { "id": "lesson-5", "title": "Тест: Протоколы" }
+  ]
+}

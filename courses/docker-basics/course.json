@@ -1,23 +1,11 @@
 {
-  "id": "docker-basics",
   "title": "Docker: Основы",
   "description": "Изучи Docker через визуализации и интерактивные лабораторные работы.",
   "previewImage": "/images/docker-bg.png",
+  "icon": "🐳",
   "previewCode": [
     "docker run -it ubuntu bash",
     "docker ps -a",
     "docker build -t myapp ."
-  ],
-  "lessons": [
-    {
-      "id": "intro",
-      "title": "Что такое Docker?",
-      "type": "theory"
-    },
-    {
-      "id": "first-container",
-      "title": "Твой первый контейнер",
-      "type": "lab"
-    }
   ]
 }

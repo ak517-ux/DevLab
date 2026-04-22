@@ -1,0 +1,12 @@
+{
+  "id": 3,
+  "title": "Тайна DNS",
+  "description": "Как имена превращаются в адреса",
+  "lessons": [
+    { "id": "lesson-1", "title": "Что такое DNS" },
+    { "id": "lesson-2", "title": "Как работает DNS-запрос" },
+    { "id": "lesson-3", "title": "DNS-сервера" },
+    { "id": "lesson-4", "title": "DNS-кэширование" },
+    { "id": "lesson-5", "title": "Тест: DNS" }
+  ]
+}
